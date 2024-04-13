@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form id="charForm" action="/char/{name}" method="GET" onsubmit="handleSubmit(event)">
+        <label for="charName"></label>
+        <input type="text" id="charName" name="charName" placeholder="캐릭터명을 입력하세요." required>
+        <button type="submit">검색</button>
+    </form>
+
+    <p th:text="${'Hello ' + value}">Hello World</p>
+
+</div>
+</body>
+<script>
+    function handleSubmit(event) {
+        event.preventDefault(); // 기본 제출 동작을 막습니다.
+        var form = event.target; // 폼 엘리먼트를 가져옵니다.
+        var charName = form.elements['charName'].value; // 입력된 캐릭터명을 가져옵니다.
+        var encodedCharName = encodeURIComponent(charName); // URL에 포함될 수 있도록 캐릭터명을 인코딩합니다.
+        window.location.href = "/char/" + encodedCharName; // URL을 변경하여 이동합니다.
+    }
+</script>
+</html>
