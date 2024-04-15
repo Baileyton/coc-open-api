@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>캐릭터 정보 검색</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>캐릭터 정보</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>서버</th>
+        <th>직업</th>
+        <th>캐릭터 이름</th>
+        <th>레벨</th>
+        <th>아이템 레벨</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="characterInfo : ${characterInfoList}">
+        <td th:text="${characterInfo.serverName}">카제로스</td>
+        <td th:text="${characterInfo.characterClassName}">바드</td>
+        <td th:text="${characterInfo.characterName}">주체</td>
+        <td th:text="${characterInfo.characterLevel}">60</td>
+        <td th:text="${characterInfo.itemMaxLevel}">1600</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="charForm" method="GET" onsubmit="handleSubmit(event)">
+    <label for="charName"></label>
+    <input type="text" id="charName" name="charName" placeholder="캐릭터명을 입력하세요." required>
+    <button type="submit">검색</button>
+</form>
+</body>
+<script>
+    function handleSubmit(event) {
+        event.preventDefault();
+        var form = event.target;
+        var charName = form.elements['charName'].value;
+        var encodedCharName = encodeURIComponent(charName);
+        window.location.href = "/char/" + encodedCharName;
+    }
+</script>
+</html>
