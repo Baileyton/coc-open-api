@@ -5,6 +5,8 @@ import com.example.coc.model.EventInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.util.List;
 
 @Service
+@EnableCaching
 public class EventService {
 
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
@@ -21,6 +24,7 @@ public class EventService {
     @Value("${api.key}")
     private String apiKey;
 
+    @Cacheable(value = "eventInfo")
     public List<EventInfo> getEventInfo() {
         try {
             String url = "https://developer-lostark.game.onstove.com/news/events";
@@ -38,7 +42,7 @@ public class EventService {
                 logger.info("이벤트 조회 API 호출 성공: {}", response.getStatusCode());
                 return eventInfoList;
             } else {
-                logger.error("이벤트 조회 API 호출 실패: {}", response.getStatusCode());
+                logger.error("이벤트 조회 API 호출 실패");
                 return null;
             }
         } catch (WebClientResponseException ex) {

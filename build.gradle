@@ -34,6 +34,8 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	// Webclient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// 캐싱
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
 tasks.named('test') {
