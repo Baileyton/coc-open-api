@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #141517;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+        header h1 {
+            margin: 0;
+            padding: 10px;
+            font-size: 24px;
+        }
+        header div {
+
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #141517;
+        }
+        .room-info {
+            align-items: center;
+        }
+        .btn-enter {
+            padding: 10px 20px;
+            background-color: #141517;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-enter:hover {
+            background-color: gray;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .search {
+            position: relative;
+            margin: 20px;
+            width: 300px;
+        }
+        .search input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+        }
+        .search button {
+            position: absolute;
+            right: -15px;
+            top: 1px;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        .chatContainer {
+            width: 100%;
+            margin: 20px auto;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .chat-body {
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .message-text {
+            font-size: 14px;
+        }
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            background-color: #fff;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .message-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .send-button {
+            padding: 8px 20px;
+            background-color: #141517;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>맞추기</h1>
+    <div class="search">
+        <form id="Form" method="GET">
+            <label for="Name"></label>
+            <input type="text" id="Name" name="Name" placeholder="제목 검색" required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</header>
+
+<div class="container">
+    <section>
+        <div>
+            <h2>30초부터 1초를 차감되는곳 남은시간</h2>
+            <p>룰, 규칙이 나오고 30초뒤에 사라짐</p>
+        </div>
+        <div>
+            <p class="room-info">현재 인원: 3 / 최대 인원: 5</p>
+            <button class="btn-enter">나가기</button>
+        </div>
+    </section>
+
+    <div class="chatContainer">
+        <div class="chat-body">
+            <div class="message-text">상대방 메시지 내용</div>
+            <div class="message-text">내 메시지 내용</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" class="message-input" placeholder="메시지 입력">
+            <button class="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 All rights reserved.</p>
+</footer>
+
+</body>
+</html>

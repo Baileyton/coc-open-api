@@ -4,15 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이벤트 정보</title>
+    <style>
+        .event-container{
+
+        }
+        .event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .event {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .event img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .event-duration {
+            margin-top: 5px;
+            color: #666;
+        }
+        @media (max-width: 1280px) {
+            .event-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .event-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>진행 중인 이벤트 정보</h1>
 <div class="event-container">
-    <div class="event-item" th:each="eventInfo : ${eventInfoList}">
-        <a th:href="${eventInfo.link}">
-            <img th:src="${eventInfo.thumbnail}" alt="">
-        </a>
-        <p th:text="${eventInfo.startDate} + ' ~ ' + ${eventInfo.endDate}">Event Period</p>
+    <h1 style="text-align: center">진행 중인 이벤트 정보</h1>
+    <div class="event-list">
+        <div class="event" th:each="eventInfo : ${eventInfoList}">
+            <a th:href="${eventInfo.link}">
+                <img th:src="${eventInfo.thumbnail}" alt="">
+            </a>
+            <p class="event-duration" th:text="${eventInfo.startDate} + ' ~ ' + ${eventInfo.endDate}">Event Period</p>
+        </div>
     </div>
 </div>
 </body>

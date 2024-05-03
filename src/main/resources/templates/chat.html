@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오톡 채팅</title>
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .chat-header {
+            padding: 10px;
+            background-color: #009688;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .chat-body {
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .my-message {
+            align-self: flex-end;
+            background-color: #dcf8c6;
+        }
+        .other-message {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+        }
+        .message-text {
+            font-size: 14px;
+        }
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .message-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .send-button {
+            padding: 8px 20px;
+            background-color: #009688;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="chat-header">친구 이름</div>
+    <div class="chat-body">
+        <div class="chat-message other-message">
+            <div class="message-text">상대방 메시지 내용</div>
+        </div>
+        <div class="chat-message my-message">
+            <div class="message-text">내 메시지 내용</div>
+        </div>
+        <!-- 이하 채팅 메시지들 -->
+    </div>
+    <div class="chat-footer">
+        <input type="text" class="message-input" placeholder="메시지 입력">
+        <button class="send-button">전송</button>
+    </div>
+</div>
+</body>
+</html>

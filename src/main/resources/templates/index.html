@@ -3,20 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <style>
+        .search-container {
+            position: relative;
+            margin: 20px;
+            width: 300px;
+        }
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+        }
+        .search-container button {
+            position: absolute;
+            right: -15px;
+            top: 1px;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        #loading-gif {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
-<form id="charForm" method="GET" onsubmit="handleSubmit(event)">
-    <label for="charName"></label>
-    <input type="text" id="charName" name="charName" placeholder="캐릭터명을 입력하세요." required>
-    <button type="submit">검색</button>
-</form>
+<header id="header" class="header">
+    <div class="search-container">
+        <form id="charForm" method="GET" onsubmit="handleSubmit(event)" >
+            <label for="charName"></label>
+            <input type="text" id="charName" name="charName" placeholder="캐릭터 검색" required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</header>
+<div id="loading-gif">
+    <img src="/img/loading.gif" alt="로딩 중...">
+</div>
 </body>
 <script>
     function handleSubmit(event) {
         event.preventDefault();
-        var form = event.target;
+        var form = event.target.closest('form');
         var charName = form.elements['charName'].value;
         var encodedCharName = encodeURIComponent(charName);
+        document.getElementById('loading-gif').style.display = 'block';
         window.location.href = "/char/" + encodedCharName;
     }
 </script>

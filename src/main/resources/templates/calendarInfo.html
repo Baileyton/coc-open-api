@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>캘린더 정보</title>
+</head>
+<body>
+<div th:if="${calendarInfo}">
+    <h2>오늘 일정</h2>
+    <div class="event-container">
+        <div th:each="event : ${calendarInfo}">
+            <div class="event">
+                <img th:src="${event.contentsIcon}" alt="이벤트 이미지">
+                <div class="event-title" th:text="${event.contentsName}"></div>
+                <div class="event-duration">
+                    <span>기간:</span>
+                    <span th:each="time : ${event.startTimes}" th:text="${time}"></span>
+                </div>
+                <div class="event-location" th:text="${event.location}"></div>
+                <!-- 기타 이벤트 정보 표시 -->
+            </div>
+        </div>
+    </div>
+</div>
+<div th:unless="${calendarInfo}">
+    <p>캘린더 정보를 가져오는데 문제가 발생했습니다.</p>
+</div>
+</body>
+</html>
