@@ -24,7 +24,7 @@ public class EventController {
 
     @ApiOperation(value = "이벤트 조회 API", notes = "진행 중인 이벤트를 조회 합니다.")
     @GetMapping
-    public ResponseEntity<List<EventInfo>> getEventList() {
+    public ResponseEntity<List<EventInfo>> getEvent() {
         List<EventInfo> eventInfo = eventService.getEventInfo();
         if (eventInfo != null && !eventInfo.isEmpty()) {
             return ResponseEntity.ok(eventInfo);

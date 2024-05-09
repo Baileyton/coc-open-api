@@ -1,7 +1,8 @@
 package com.example.coc.service;
 
-import com.example.coc.controller.EventController;
-import com.example.coc.model.EventInfo;
+
+import com.example.coc.controller.ContentController;
+import com.example.coc.model.AbyssInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,38 +18,38 @@ import java.util.List;
 
 @Service
 @EnableCaching
-public class EventService {
+public class ContentService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @Value("${api.key}")
     private String apiKey;
 
-    public List<EventInfo> getEventInfo() {
+    public List<AbyssInfo> getAbyssInfo() {
         try {
-            String url = "https://developer-lostark.game.onstove.com/news/events";
+            String url = "https://developer-lostark.game.onstove.com/gamecontents/challenge-abyss-dungeons";
 
-            ResponseEntity<List<EventInfo>> response = WebClient.create()
+            ResponseEntity<List<AbyssInfo>> response = WebClient.create()
                     .get()
                     .uri(url)
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + apiKey)
                     .retrieve()
-                    .toEntityList(EventInfo.class)
+                    .toEntityList(AbyssInfo.class)
                     .block();
 
             if (response != null) {
-                List<EventInfo> eventInfoList = response.getBody();
-                logger.info("이벤트 조회 API 호출 성공: {}", response.getStatusCode());
-                return eventInfoList;
+                List<AbyssInfo> abyssInfo = response.getBody();
+                logger.info("어비스 던전 조회 API 호출 성공: {}", response.getStatusCode());
+                return abyssInfo;
             } else {
-                logger.error("이벤트 조회 API 호출 실패");
+                logger.error("어비스 던전 조회 API 호출 실패");
                 return null;
             }
         } catch (WebClientResponseException ex) {
-            logger.error("이벤트 조회 API 호출 중 오류 발생: 응답 코드 - {}, 오류 메시지 - {}", ex.getRawStatusCode(), ex.getResponseBodyAsString(), ex);
+            logger.error("어비스 던전 조회 API 호출 중 오류 발생: 응답 코드 - {}, 오류 메시지 - {}", ex.getRawStatusCode(), ex.getResponseBodyAsString(), ex);
             return null;
         } catch (Exception e) {
-            logger.error("이벤트 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
+            logger.error("어비스 던전 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
             return null;
         }
     }
