@@ -48,20 +48,6 @@
             font-size: 20px;
             color: #141517;
         }
-        .room-info {
-            align-items: center;
-        }
-        .btn-enter {
-            padding: 10px 20px;
-            background-color: #141517;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-enter:hover {
-            background-color: gray;
-        }
         footer {
             text-align: center;
             padding: 10px;
@@ -91,12 +77,47 @@
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
+        .event-container{
+
+        }
+        .event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .event {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .event img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .event-duration {
+            margin-top: 5px;
+            color: #666;
+        }
+        @media (max-width: 1280px) {
+            .event-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .event-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>맞추기</h1>
+    <h1>TITLE</h1>
     <div class="search">
         <form id="Form" method="GET">
             <label for="Name"></label>
@@ -108,24 +129,36 @@
 
 <div class="container">
     <section>
-        <div>
-            <h2>노래 맞추기</h2>
-            <p>00 ~ 00년대 노래 맞추기</p>
-        </div>
-        <div>
-            <p class="room-info">현재 인원: 3 / 최대 인원: 5</p>
-            <button class="btn-enter">입장</button>
+        <div class="event-container">
+            <h1 style="text-align: center">진행 중인 이벤트 정보</h1>
+            <div class="event-list">
+                <div class="event" th:each="eventInfo : ${eventInfoList}">
+                    <a th:href="${eventInfo.link}">
+                        <img th:src="${eventInfo.thumbnail}" alt="">
+                    </a>
+                    <p class="event-duration" th:text="${eventInfo.startDate} + ' ~ ' + ${eventInfo.endDate}">Event Period</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <section>
-        <div>
-            <h2>인물 맞추기</h2>
-            <p>인물 사진 보고 맞추기</p>
-        </div>
-        <div>
-            <p class="room-info">현재 인원: 1 / 최대 인원: 5</p>
-            <button class="btn-enter">입장</button>
+        <div th:if="${calendarInfo}">
+            <h2>오늘 일정</h2>
+            <div class="event-container">
+                <div th:each="event : ${calendarInfo}">
+                    <div class="event">
+                        <img th:src="${event.contentsIcon}" alt="이벤트 이미지">
+                        <div class="event-title" th:text="${event.contentsName}"></div>
+                        <div class="event-duration">
+                            <span>기간:</span>
+                            <span th:each="time : ${event.startTimes}" th:text="${time}"></span>
+                        </div>
+                        <div class="event-location" th:text="${event.location}"></div>
+                        <!-- 기타 이벤트 정보 표시 -->
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

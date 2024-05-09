@@ -1,23 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <style>
-        .search-container {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #141517;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+        header h1 {
+            margin: 0;
+            padding: 10px;
+            font-size: 24px;
+        }
+        header div {
+
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #141517;
+        }
+        footer {
+            text-align: center;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 0;
+        }
+        .search {
             position: relative;
             margin: 20px;
             width: 300px;
         }
-        .search-container input[type="text"] {
+        .search input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 10px;
             outline: none;
         }
-        .search-container button {
+        .search button {
             position: absolute;
             right: -15px;
             top: 1px;
@@ -27,38 +76,165 @@
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
-        #loading-gif {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
+        .event-container{
+
+        }
+        #event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .event img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .event a{
+            color: inherit; /* 링크의 색상을 상속받음 */
+            text-decoration: none; /* 밑줄 제거 */
+        }
+        @media (max-width: 1280px) {
+            #event-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            #event-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-<header id="header" class="header">
-    <div class="search-container">
-        <form id="charForm" method="GET" onsubmit="handleSubmit(event)" >
-            <label for="charName"></label>
-            <input type="text" id="charName" name="charName" placeholder="캐릭터 검색" required>
+
+<header>
+    <h1>TITLE</h1>
+    <div class="search">
+        <form id="Form" method="GET">
+            <label for="Name"></label>
+            <input type="text" id="Name" name="Name" placeholder="제목 검색" required>
             <button type="submit"><i class="fas fa-search"></i></button>
         </form>
     </div>
 </header>
-<div id="loading-gif">
-    <img src="/img/loading.gif" alt="로딩 중...">
+
+<div class="container">
+    <section>
+        <div id="loading" style="display: none;">
+            <img src="/img/loading.gif" alt="로딩 중">
+        </div>
+        <div class="event-container">
+            <h1 id="eventInfo" style="text-align: center">진행 중인 이벤트 정보</h1>
+            <div id="event-list"></div>
+        </div>
+    </section>
+
+    <section>
+    </section>
+
 </div>
+
+<footer>
+    <p>© 2024 All rights reserved.</p>
+</footer>
 </body>
 <script>
-    function handleSubmit(event) {
-        event.preventDefault();
-        var form = event.target.closest('form');
-        var charName = form.elements['charName'].value;
-        var encodedCharName = encodeURIComponent(charName);
-        document.getElementById('loading-gif').style.display = 'block';
-        window.location.href = "/char/" + encodedCharName;
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var loadingDiv = document.getElementById('loading');
+        var eventListDiv = document.getElementById('event-list');
+        var eventH1 = document.getElementById('eventInfo');
+
+        // 이벤트 목록을 가져와서 표시하는 함수
+        function fetchEventList() {
+            // 로딩 이미지를 표시
+            loadingDiv.style.display = 'block';
+            eventH1.style.display = 'none';
+
+            // 서버의 이벤트 목록을 조회하는 API 엔드포인트 URL
+            var apiUrl = '/api/events';
+
+            // AJAX 요청을 보냄
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    // 로딩 이미지를 숨김
+                    loadingDiv.style.display = 'none';
+                    if (xhr.status === 200) {
+                        // 성공적으로 이벤트 목록을 가져온 경우
+                        var eventInfo = JSON.parse(xhr.responseText);
+                        renderEventList(eventInfo);
+                    } else {
+                        // 실패한 경우에 대한 처리
+                        console.error('Failed to fetch event list');
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // 가져온 이벤트 목록을 화면에 표시하는 함수
+        function renderEventList(eventInfo) {
+            // 이벤트 목록을 화면에 표시하기 전에 로딩 이미지를 숨김
+            loadingDiv.style.display = 'none';
+            eventH1.style.display = 'block';
+
+            // 이벤트 목록을 반복하면서 HTML 요소를 생성하여 표시
+            eventInfo.forEach(function(event) {
+                var eventDiv = document.createElement('div');
+
+                var thumbnailLink = document.createElement('a');
+                thumbnailLink.href = event.Link; // 이벤트의 링크로 설정
+                thumbnailLink.target = "_blank"; // 새 창으로 열기 설정
+
+                var thumbnailImage = document.createElement('img');
+                thumbnailImage.src = event.Thumbnail;
+                thumbnailImage.alt = "Event Thumbnail";
+
+                thumbnailLink.appendChild(thumbnailImage); // 이미지를 링크에 추가
+
+                // 이벤트의 시작일(startDate)과 종료일(endDate)을 표시
+                var durationParagraph = document.createElement('p');
+
+                var startDate = new Date(event.StartDate);
+                var endDate = new Date(event.EndDate);
+                // 날짜를 원하는 형식으로 변환하는 함수
+                function formatDate(date) {
+                    var year = date.getFullYear();
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var hours = ('0' + date.getHours()).slice(-2);
+                    var minutes = ('0' + date.getMinutes()).slice(-2);
+                    return year + '.' + month + '.' + day + ' ' + hours + ':' + minutes;
+                }
+                // 수정된 날짜 범위 문자열로 변환
+                durationParagraph.textContent = formatDate(startDate) + ' - ' + formatDate(endDate);
+                thumbnailLink.appendChild(durationParagraph);
+
+                eventDiv.appendChild(thumbnailLink); // 링크를 이벤트 div에 추가
+
+
+                eventDiv.classList.add("event");
+
+                eventListDiv.appendChild(eventDiv);
+            });
+        }
+
+        // 페이지 로드시 이벤트 목록을 가져와서 표시
+        fetchEventList();
+    });
 </script>
 </html>

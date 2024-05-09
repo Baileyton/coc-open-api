@@ -8,7 +8,6 @@
 | Domain        | URL              | Http Method | Description       |
 |:--------------|:-----------------|:------------|:------------------|
 | **Character** | /char/{charName} | `GET`       | 계정의 모든 캐릭터 프로필 조회 |
-| **Event**     | /events          | `GET`       | 진행 중인 이벤트 목록 조회   |
-
+| **Event**     | /api/events      | `GET`       | 진행 중인 이벤트 목록 조회   |
 
 <br/>

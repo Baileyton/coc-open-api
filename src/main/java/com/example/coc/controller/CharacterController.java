@@ -21,7 +21,7 @@ public class CharacterController {
         this.characterService = characterService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/api")
     public String charSearch(){
         return "index";
     }
