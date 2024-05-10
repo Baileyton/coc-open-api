@@ -121,7 +121,7 @@
         }
         @media (max-width: 1280px) {
             #abyss-list {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         @media (max-width: 768px) {
@@ -175,6 +175,16 @@
         </div>
     </section>
 
+    <section>
+        <div id="guardian-loading" style="display: none;">
+            <img src="/img/loading.gif" alt="로딩 중">
+        </div>
+        <div class="guardian-container">
+            <h1 id="guardianInfo" style="text-align: center">가디언 토벌 정보</h1>
+            <div id="guardian-list"></div>
+        </div>
+    </section>
+
 </div>
 
 <footer>
@@ -192,7 +202,7 @@
         var abyssH1 = document.getElementById('abyssInfo');
 
         // 이벤트 목록을 가져와서 표시하는 함수
-        function fetchEventList() {
+        function fetchEventInfo() {
             // 로딩 이미지를 표시
             loadingDiv.style.display = 'block';
             eventH1.style.display = 'none';
@@ -248,11 +258,40 @@
             xhr.send();
         }
 
+        function fetchGuardianInfo() {
+            // 로딩 이미지를 표시
+
+
+            // 서버의 이벤트 목록을 조회하는 API 엔드포인트 URL
+            var apiUrl = '/api/guardian';
+
+            // AJAX 요청을 보냄
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    // 로딩 이미지를 숨김
+
+                    if (xhr.status === 200) {
+                        // 성공적으로 이벤트 목록을 가져온 경우
+                        var guardianInfo = JSON.parse(xhr.responseText);
+                        renderEventList(guardianInfo);
+                    } else {
+                        // 실패한 경우에 대한 처리
+                        console.error('Failed to fetch guardian list');
+                    }
+                }
+            };
+            xhr.send();
+        }
+
         // 가져온 이벤트 목록을 화면에 표시하는 함수
         function renderEventList(eventInfo) {
             // 이벤트 목록을 화면에 표시하기 전에 로딩 이미지를 숨김
             loadingDiv.style.display = 'none';
             eventH1.style.display = 'block';
+
+            var currentDate = new Date(); // 현재 날짜 가져오기
 
             // 이벤트 목록을 반복하면서 HTML 요소를 생성하여 표시
             eventInfo.forEach(function(event) {
@@ -278,9 +317,7 @@
                     var year = date.getFullYear();
                     var month = ('0' + (date.getMonth() + 1)).slice(-2);
                     var day = ('0' + date.getDate()).slice(-2);
-                    var hours = ('0' + date.getHours()).slice(-2);
-                    var minutes = ('0' + date.getMinutes()).slice(-2);
-                    return year + '.' + month + '.' + day + ' ' + hours + ':' + minutes;
+                    return year + '.' + month + '.' + day
                 }
                 // 수정된 날짜 범위 문자열로 변환
                 durationParagraph.textContent = formatDate(startDate) + ' - ' + formatDate(endDate);
@@ -291,7 +328,11 @@
 
                 eventDiv.classList.add("event");
 
-                eventListDiv.appendChild(eventDiv);
+                if (currentDate > endDate) {
+                    eventListDiv.appendChild(eventDiv); // 후순위로 추가
+                } else {
+                    eventListDiv.insertBefore(eventDiv, eventListDiv.firstChild); // 선순위로 추가
+                }
             });
         }
 
@@ -312,33 +353,24 @@
                 thumbnailImage.alt = "Abyss Image";
                 abyssDiv.appendChild(thumbnailImage);
 
-                // 이벤트의 시작일(startDate)과 종료일(endDate)을 표시
-                var durationParagraph = document.createElement('p');
-
-                var startDate = new Date(abyss.StartTime);
-                var endDate = new Date(abyss.EndTime);
-                // 날짜를 원하는 형식으로 변환하는 함수
-                function formatDate(date) {
-                    var year = date.getFullYear();
-                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
-                    var day = ('0' + date.getDate()).slice(-2);
-                    var hours = ('0' + date.getHours()).slice(-2);
-                    var minutes = ('0' + date.getMinutes()).slice(-2);
-                    return year + '.' + month + '.' + day + ' ' + hours + ':' + minutes;
-                }
-                // 수정된 날짜 범위 문자열로 변환
-                durationParagraph.textContent = formatDate(startDate) + ' - ' + formatDate(endDate);
-                abyssDiv.appendChild(durationParagraph);
-
-
                 abyssDiv.classList.add("abyss");
                 abyssListDiv.appendChild(abyssDiv);
             });
         }
 
+        function renderGuardianInfo(guardianInfo) {
+
+
+            // 이벤트 목록을 반복하면서 HTML 요소를 생성하여 표시
+            guardianInfo.forEach(function(guardian) {
+
+            });
+        }
+
         // 페이지 로드시 이벤트 목록을 가져와서 표시
-        fetchEventList();
+        fetchEventInfo();
         fetchAbyssInfo();
+        fetchGuardianInfo();
     });
 </script>
 </html>

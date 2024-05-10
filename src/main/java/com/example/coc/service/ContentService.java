@@ -3,10 +3,10 @@ package com.example.coc.service;
 
 import com.example.coc.controller.ContentController;
 import com.example.coc.model.AbyssInfo;
+import com.example.coc.model.GuardianInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +50,35 @@ public class ContentService {
             return null;
         } catch (Exception e) {
             logger.error("어비스 던전 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public List<GuardianInfo> getGuardianInfo() {
+        try {
+            String url = "https://developer-lostark.game.onstove.com/gamecontents/challenge-guardian-dungeons";
+
+            ResponseEntity<List<GuardianInfo>> response = WebClient.create()
+                    .get()
+                    .uri(url)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + apiKey)
+                    .retrieve()
+                    .toEntityList(GuardianInfo.class)
+                    .block();
+
+            if (response != null) {
+                List<GuardianInfo> guardianInfo = response.getBody();
+                logger.info("가디언 토벌 조회 API 호출 성공: {}", response.getStatusCode());
+                return guardianInfo;
+            } else {
+                logger.error("가디언 토벌 조회 API 호출 실패");
+                return null;
+            }
+        } catch (WebClientResponseException ex) {
+            logger.error("가디언 토벌 조회 API 호출 중 오류 발생: 응답 코드 - {}, 오류 메시지 - {}", ex.getRawStatusCode(), ex.getResponseBodyAsString(), ex);
+            return null;
+        } catch (Exception e) {
+            logger.error("가디언 토벌 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
             return null;
         }
     }
