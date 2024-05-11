@@ -1,9 +1,12 @@
 package com.example.coc.controller;
 
 import com.example.coc.model.AbyssInfo;
+import com.example.coc.model.CalendarInfo;
 import com.example.coc.model.GuardianInfo;
 import com.example.coc.service.ContentService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,4 +48,14 @@ public class ContentController {
         }
     }
 
+    @ApiOperation(value = "캘린더 조회 API", notes = "오늘 컨텐츠를 조회합니다.")
+    @GetMapping("/calendar")
+    public ResponseEntity<List<CalendarInfo>> getCalendar() {
+        List<CalendarInfo> calendarInfo = contentService.getCalendarInfo();
+        if (calendarInfo != null && !calendarInfo.isEmpty()) {
+            return ResponseEntity.ok(calendarInfo);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

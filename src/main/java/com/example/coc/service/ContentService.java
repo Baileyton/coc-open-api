@@ -3,6 +3,7 @@ package com.example.coc.service;
 
 import com.example.coc.controller.ContentController;
 import com.example.coc.model.AbyssInfo;
+import com.example.coc.model.CalendarInfo;
 import com.example.coc.model.GuardianInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,35 @@ public class ContentService {
             return null;
         } catch (Exception e) {
             logger.error("가디언 토벌 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public List<CalendarInfo> getCalendarInfo() {
+        try {
+            String url = "https://developer-lostark.game.onstove.com/gamecontents/calendar";
+
+            ResponseEntity<List<CalendarInfo>> response = WebClient.create()
+                    .get()
+                    .uri(url)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + apiKey)
+                    .retrieve()
+                    .toEntityList(CalendarInfo.class)
+                    .block();
+
+            if (response != null) {
+                List<CalendarInfo> calendarInfo = response.getBody();
+                logger.info("캘린더 조회 API 호출 성공: {}", response.getStatusCode());
+                return calendarInfo;
+            } else {
+                logger.error("캘린더 조회 API 호출 실패");
+                return null;
+            }
+        } catch (WebClientResponseException ex) {
+            logger.error("캘린더 조회 API 호출 중 오류 발생: 응답 코드 - {}, 오류 메시지 - {}", ex.getRawStatusCode(), ex.getResponseBodyAsString(), ex);
+            return null;
+        } catch (Exception e) {
+            logger.error("캘린더 조회 API 호출 중 오류 발생: {}", e.getMessage(), e);
             return null;
         }
     }
