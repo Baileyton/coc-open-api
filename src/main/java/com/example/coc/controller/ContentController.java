@@ -39,9 +39,9 @@ public class ContentController {
 
     @ApiOperation(value = "도전 가디언 토벌 조회 API", notes = "이번주 도전 가디언 토벌을 조회합니다.")
     @GetMapping("/guardian")
-    public ResponseEntity<List<GuardianInfo>> getGuardian() {
-        List<GuardianInfo> guardianInfo = contentService.getGuardianInfo();
-        if (guardianInfo != null && !guardianInfo.isEmpty()) {
+    public ResponseEntity<GuardianInfo> getGuardian() {
+        GuardianInfo guardianInfo = contentService.getGuardianInfo();
+        if (guardianInfo != null) {
             return ResponseEntity.ok(guardianInfo);
         } else {
             return ResponseEntity.noContent().build();
